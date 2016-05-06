@@ -23,11 +23,6 @@ function SimulationRenderer( WIDTH, renderer ) {
 
 	}
 
-	if ( gl.getParameter( gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS ) == 0 ) {
-		alert( "No support for vertex shader textures!" );
-		return;
-	}
-
 	var scene = new THREE.Scene();
 
 	var uniforms = {
@@ -206,9 +201,9 @@ function SimulationRenderer( WIDTH, renderer ) {
 
 	function generateVelocityTexture() {
 
-		var a = new Float32Array( PARTICLES * 4 );
+		var a = new Float32Array( PARTICLES * 3 );
 
-		for ( var k = 0, kl = a.length; k < kl; k += 4 ) {
+		for ( var k = 0, kl = a.length; k < kl; k += 3 ) {
 
 			var x = Math.random() - 0.5;
 			var y = Math.random() - 0.5;
@@ -217,11 +212,10 @@ function SimulationRenderer( WIDTH, renderer ) {
 			a[ k + 0 ] = x * 10;
 			a[ k + 1 ] = y * 10;
 			a[ k + 2 ] = z * 10;
-			a[ k + 3 ] = 1;
 
 		}
 
-		var texture = new THREE.DataTexture( a, WIDTH, WIDTH, THREE.RGBAFormat, THREE.FloatType ); // was RGB format. changed to RGBA format. see discussion in #8415 / #8450
+		var texture = new THREE.DataTexture( a, WIDTH, WIDTH, THREE.RGBFormat, THREE.FloatType );
 		texture.needsUpdate = true;
 
 		return texture;
